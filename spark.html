@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <style>
+      .settings {
+        font-style:italic;
+        border-style:dotted;
+        color:black;
+        padding:2px;
+        font-size:0.8;
+      }
+      .stats {
+        position:relative;
+        float:right;
+        border-style:dotted;
+        color:black;
+        padding:2px;
+        min-width:9%;
+      }
+      .showNum {
+        font-style:italic;
+        font-size:0.8em;
+        color:black;
+      }
+      .desc {
+        font-size:0.9em;
+        color:black;
+      }
+      .subDesc {
+        font-size:0.85em;
+        color:black;
+        font-style:italic;
+      }
+    </style>
+    <script>
+      var pick = 1
+    </script>
+    <script type="text/javascript" src="/static/jql.js"></script>
+    <title>42</title>
+  </head>
+  <body ondblclick='javascript:document.title=Math.PI.toFixed(pick);pick++' onLoad='javascript:document.getElementById("debug").value=debug'>
+    <canvas id="foo" width=1000 height=500>Your fucking browser does NOT support canvas, you stupid nooooooob !!!</canvas>
+    <div class="stats">
+      FPS: <span id="showFPSnow">0</span><br>
+      FPS-Average: <span id="showFPSaver">0</span>
+    </div>
+    <div class="settings">
+      Set Properties:
+      <div id="slider">
+      </div>
+      <hr>
+      Edit Physics:
+      <div id="phy">
+        <input type="button" value="Add Planet" onClick='javascript:addPlanet(Math.random() * canvas.width * scale, Math.random() * canvas.height * scale)'><br>
+        <input type="button" value="Add 1 particle" onClick='javascript:sparkNum++'><br>
+        <span class="desc">Should sparks affect each other? </span><input type="checkbox" onChange="sparksAffect ?  sparksAffect = false : sparksAffect = true" checked><br>
+        <span class="desc">Set debug-level: </span><input id="debug" type="text" onChange='javascript:debug=this.value'><br>
+      </div>
+      <hr>
+      Set Mode:<br>
+      <form>
+        <span class="subDesc">Movement:</span><br>
+        <span class="desc">Wiggle </span><input type="radio" name="modeSet" value="wiggle" onChange='javascript:setMoveMode(this.value)'><br>
+        <span class="desc">Curves </span><input type="radio" name="modeSet" value="curves" onChange='javascript:setMoveMode(this.value)'><br>
+        <span class="desc">Physic Movement </span><input type="radio" name="modeSet" value="physics" onChange='javascript:setMoveMode(this.value)' checked><br>
+      </form>
+      <form>
+        <span class="subDesc">Looking:</span><br>
+        <span class="desc">Normal </span><input type="radio" name="modeSet" value="normal" checked onClick='javascript:setShowMode(this.value)'><br>
+        <span class="desc">Oscillate (buggy)</span><input type="radio" name="modeSet" value="oscillate" onClick='javascript:setShowMode(this.value)'><br>
+      </form>
+      <hr>
+      <input type="button" value="Bye, go fullscreen!" onClick='javascript:makeFullscreen()'> -- Use your mouse ! (Click'n drag / Double click)
+    </div>
+    <div id="con"></div>
+    <script type="text/javascript" src="spark.js"></script>
+  </body>
+</html>
