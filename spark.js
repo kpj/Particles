@@ -169,23 +169,23 @@ var distY = 0
 var accelX = 0
 var accelY = 0
 var noAccelSpace = 3
-var planets = []
+var stars = []
 var sparksAffect = true
 function makePhysics() {
   var t = new Date().getTime()
   var dT = (t - oldT)/1000
 
-  drawPlanets()
+  drawStars()
   
   for(var s in sparks) {
-    for(var p in planets) {
-      var accel = getAccel(sparks[s], planets[p])
+    for(var p in stars) {
+      var accel = getAccel(sparks[s], stars[p])
       if (accel == "FAIL") continue
       sparks[s].vx += accel[0] *dT
       sparks[s].vy += accel[1] *dT
       
       ctx.fillStyle = "white"
-      if(debug == 2) {textToTile(["Ages: "+accel, "f: "+f, "m: "+sparks[s].m ,"Ax: "+accelX, "Ay: "+accelY, "Vx: "+sparks[s].vx, "Vy: "+sparks[s].vy], sparks[s].x, sparks[s].y) ; textToTile(["M: "+planets[p].m], planets[p].x/scale+zoomX, planets[p].y/scale+zoomX)}
+      if(debug == 2) {textToTile(["Ages: "+accel, "f: "+f, "m: "+sparks[s].m ,"Ax: "+accelX, "Ay: "+accelY, "Vx: "+sparks[s].vx, "Vy: "+sparks[s].vy], sparks[s].x, sparks[s].y) ; textToTile(["M: "+stars[p].m], stars[p].x/scale+zoomX, stars[p].y/scale+zoomX)}
       ctx.strokeStyle = "white"
       if(debug == 1) makeLine(sparks[s].x/scale+zoomX, sparks[s].y/scale+zoomY, sparks[s].x/scale + accel[0]/scale+zoomX, sparks[s].y/scale + accel[1]/scale+zoomY)
       if(debug == 2) textToTile(["Dist: "+dist, "F: "+f, "v.x: "+sparsk[s].vx, "v.y: "+sparks[s].vy], sparks[s].x*scale-zoomX*scale, sparks[s].y*scale-zoomY*scale)
@@ -208,7 +208,7 @@ function sparksToo(spark, dT) {
     if(spark.x == sparks[s].x) continue
     var accel = getAccel(sparks[s], spark)
     ctx.strokeStyle = "green"
-    if(debug == 1) makeLine(sparks[s].x/scale+zoomX, sparks[s].y/scale+zoomY, sparks[s].x/scale + accel[0]/scale*10000000+zoomX, sparks[s].y/scale + accel[1]/scale*10000000+zoomY)
+    if(debug == 1) makeLine(sparks[s].x/scale+zoomX, sparks[s].y/scale+zoomY, sparks[s].x/scale + accel[0]/scale*10000+zoomX, sparks[s].y/scale + accel[1]/scale*10000+zoomY)
     sparks[s].vx += accel[0] *dT
     sparks[s].vy += accel[1] *dT
   }
@@ -229,7 +229,7 @@ function getAccel(obj1, obj2) {
 }
 
 function addPlanet(x, y) {
-  planets.push({
+  stars.push({
     x : x,
     y : y,
     color : "yellow",
@@ -246,10 +246,10 @@ function textToTile(text, x, y) {
   }
 }
 
-function drawPlanets() {
-  for(var p in planets) {
-    ctx.fillStyle = planets[p].color
-    drawCircle(planets[p].x/scale+zoomX, planets[p].y/scale+zoomY, planets[p].r)
+function drawStars() {
+  for(var p in stars) {
+    ctx.fillStyle = stars[p].color
+    drawCircle(stars[p].x/scale+zoomX, stars[p].y/scale+zoomY, stars[p].r)
   }
 }
 
