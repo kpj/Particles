@@ -35,7 +35,7 @@ sliders = {
 }
 
 var sparks = []
-function genSparks(num, x, y, vx, vy) {
+function genSparks(num, x, y, vx, vy, m) {
   for (var i=0 ; i < num ; i++) {
     sparks.push({
       "x" : x,
@@ -48,7 +48,7 @@ function genSparks(num, x, y, vx, vy) {
       "accel" : 0,
       "d" : Math.random()/5,
       "swarm" : "-1",
-      "m" : 5.974 * Math.pow(10, 24),
+      "m" : m || 5.974 * Math.pow(10, 24),
       "color" : genCol2()
     })
   }
@@ -171,15 +171,18 @@ var accelY = 0
 var noAccelSpace = 3
 var stars = []
 var sparksAffect = true
+var time = 0
 function makePhysics() {
   var t = new Date().getTime()
-  var dT = (t - oldT)/1000
-
+  var dT = (t - oldT)/1000 *vMax
+  time += dT
+  document.getElementById("time").innerHTML = (time / 3600 / 24 / 365.25).toFixed(1)+" y "+((time / 3600 / 24)%365).toFixed(2)+" d"
   drawStars()
   
   for(var s in sparks) {
     for(var p in stars) {
       var accel = getAccel(sparks[s], stars[p])
+
       if (accel == "FAIL") continue
       sparks[s].vx += accel[0] *dT
       sparks[s].vy += accel[1] *dT
@@ -196,8 +199,8 @@ function makePhysics() {
     ctx.strokeStyle = "red"
     if(debug == 1) makeLine(sparks[s].x/scale+zoomX, sparks[s].y/scale+zoomY, sparks[s].x/scale + sparks[s].vx/scale*2+zoomX, sparks[s].y/scale + sparks[s].vy/scale*2+zoomY)
 
-    sparks[s].x += sparks[s].vx *dT *vMax
-    sparks[s].y += sparks[s].vy *dT *vMax
+    sparks[s].x += sparks[s].vx *dT
+    sparks[s].y += sparks[s].vy *dT
   }
 
   oldT = new Date().getTime()
@@ -207,6 +210,7 @@ function sparksToo(spark, dT) {
   for (var s in sparks) {
     if(spark.x == sparks[s].x) continue
     var accel = getAccel(sparks[s], spark)
+    if (accel == "FAIL") continue
     ctx.strokeStyle = "green"
     if(debug == 1) makeLine(sparks[s].x/scale+zoomX, sparks[s].y/scale+zoomY, sparks[s].x/scale + accel[0]/scale*10000+zoomX, sparks[s].y/scale + accel[1]/scale*10000+zoomY)
     sparks[s].vx += accel[0] *dT
@@ -226,6 +230,26 @@ function getAccel(obj1, obj2) {
   accelY = (distY < 0 ? -1 : 1) * Math.abs(distY / dist) * accel
   
   return [accelX, accelY]
+}
+
+function genUniverse() {
+  var planets =  [
+    [0, 0, 0, 0, 1.989e30], // Sun
+    [0, 57.9e9, 47.86e3, 0, 3.3e23], // Merkur
+    [0, 108.2e9, 35e3, 0, 4.869e24], // Venus
+    [0, 149.6e9, 29.78568e3, 0, 5.97e24],  // Erde
+    [384e6, 149.6e9, 29.785e3, 1022, 7.35e22], // Erden Mond
+    [0, 227.9e9, 24.124e3, 0,6.419e23], // Mars
+  ]
+  scale = 2000000000
+  sparkNum = planets.length
+  vMax = 1e6
+  zoomX = 3e2
+  zoomY = 3e2
+
+  for(var p in planets) {
+    genSparks(1, planets[p][0], planets[p][1], planets[p][2], planets[p][3], planets[p][4])
+  }
 }
 
 function addPlanet(x, y) {
