@@ -56,6 +56,7 @@
         <input type="button" value="Add 1 particle" onClick='javascript:sparkNum++'><br>
         <span class="desc">Should sparks affect each other? </span><input type="checkbox" onChange="sparksAffect ?  sparksAffect = false : sparksAffect = true" checked><br>
         <span class="desc">Set debug-level: </span><input id="debug" type="text" onChange='javascript:debug=this.value'><br>
+        <span class="desc">Set which particle to follow (undefined = none): </span><input type="text" onChange='javascript:centered = this.value'><br>
         <input type="button" value="Create real Universe" onClick='javascript:genUniverse()'><br>
       </div>
       <hr>

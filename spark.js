@@ -28,10 +28,10 @@ sliders = {
   "sparkNum" : {name:"particle number", min:1, max:1000, step:1},
   "sparkSize" : {name:"particle size", min:1, max:100, step:1},
   "vMax" : {name:"particle velocity", min:1, max:100, step:1},
-  "bgOpac" : {name:"tail-length", min:1, max:1000, step:1},
+  "bgOpac" : {name:"tail-length", min:1, max:260, step:1},
   "bLimit" : {name:"bLimit", min:0.001, max:2, step:0.01},
   "dLimit" : {name:"dLimit", min:0.001, max:2, step:0.01},
-  "scale" : {name:"scale", min:1, max:1000000, step:1}
+  "scale" : {name:"scale", min:1, max:10000000, step:1}
 }
 
 var sparks = []
@@ -188,16 +188,16 @@ function makePhysics() {
       sparks[s].vy += accel[1] *dT
       
       ctx.fillStyle = "white"
-      if(debug == 2) {textToTile(["Ages: "+accel, "f: "+f, "m: "+sparks[s].m ,"Ax: "+accelX, "Ay: "+accelY, "Vx: "+sparks[s].vx, "Vy: "+sparks[s].vy], sparks[s].x, sparks[s].y) ; textToTile(["M: "+stars[p].m], stars[p].x/scale+zoomX, stars[p].y/scale+zoomX)}
       ctx.strokeStyle = "white"
       if(debug == 1) makeLine(sparks[s].x/scale+zoomX, sparks[s].y/scale+zoomY, sparks[s].x/scale + accel[0]/scale+zoomX, sparks[s].y/scale + accel[1]/scale+zoomY)
-      if(debug == 2) textToTile(["Dist: "+dist, "F: "+f, "v.x: "+sparsk[s].vx, "v.y: "+sparks[s].vy], sparks[s].x*scale-zoomX*scale, sparks[s].y*scale-zoomY*scale)
     }
     
     sparksAffect && sparksToo(sparks[s], dT)
 
     ctx.strokeStyle = "red"
+    ctx.fillStyle = "white"
     if(debug == 1) makeLine(sparks[s].x/scale+zoomX, sparks[s].y/scale+zoomY, sparks[s].x/scale + sparks[s].vx/scale*2+zoomX, sparks[s].y/scale + sparks[s].vy/scale*2+zoomY)
+    if(debug == 2) textToTile(["Num: "+s,"v.x: "+sparks[s].vx, "v.y: "+sparks[s].vy], sparks[s].x/scale-zoomX/scale, sparks[s].y/scale-zoomY/scale)
 
     sparks[s].x += sparks[s].vx *dT
     sparks[s].y += sparks[s].vy *dT
@@ -276,6 +276,14 @@ function drawStars() {
     drawCircle(stars[p].x/scale+zoomX, stars[p].y/scale+zoomY, stars[p].r)
   }
 }
+
+var centered = undefined
+function center(num) {
+  if (num < sparks.length) {
+    zoomX = -sparks[num].x / scale + canvas.width/2
+    zoomY = -sparks[num].y / scale + canvas.height/2
+  }
+} 
 
 function checkSpace() {
   for (var s in sparks) {
@@ -475,6 +483,7 @@ function tick() {
   moveMode["wiggle"] && moveSparksWiggle()
   moveMode["curves"] && moveSparksCurves()
   moveMode["physics"] && makePhysics()
+  moveMode["physics"] && centered != undefined && center(centered)
   !moveMode["physics"] && checkSpace()
   adjustSparks()
 
