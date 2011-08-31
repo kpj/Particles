@@ -225,10 +225,9 @@ function getAccel(obj1, obj2) {
   f = gravK * (obj2.m * obj1.m) / Math.pow(dist, 2)
   accel = f / obj1.m
 
-  if(Math.abs(dist) < 5) return "FAIL"
+  if(Math.abs(dist) < obj2.r*scale) return "FAIL"
   accelX = (distX < 0 ? -1 : 1) * Math.abs(distX / dist) * accel
   accelY = (distY < 0 ? -1 : 1) * Math.abs(distY / dist) * accel
-  
   return [accelX, accelY]
 }
 
