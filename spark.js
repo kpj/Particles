@@ -197,7 +197,7 @@ function makePhysics() {
     ctx.strokeStyle = "red"
     ctx.fillStyle = "white"
     if(debug == 1) makeLine(sparks[s].x/scale+zoomX, sparks[s].y/scale+zoomY, sparks[s].x/scale + sparks[s].vx/scale*2+zoomX, sparks[s].y/scale + sparks[s].vy/scale*2+zoomY)
-    if(debug == 2) textToTile(["Num: "+s,"v.x: "+sparks[s].vx, "v.y: "+sparks[s].vy], sparks[s].x/scale-zoomX/scale, sparks[s].y/scale-zoomY/scale)
+    if(debug == 2) textToTile(["Num: "+s,"v.x: "+sparks[s].vx, "v.y: "+sparks[s].vy], sparks[s].x/scale+zoomX, sparks[s].y/scale+zoomY)
 
     sparks[s].x += sparks[s].vx *dT
     sparks[s].y += sparks[s].vy *dT
@@ -212,7 +212,7 @@ function sparksToo(spark, dT) {
     var accel = getAccel(sparks[s], spark)
     if (accel == "FAIL") continue
     ctx.strokeStyle = "green"
-    if(debug == 1) makeLine(sparks[s].x/scale+zoomX, sparks[s].y/scale+zoomY, sparks[s].x/scale + accel[0]/scale*10000+zoomX, sparks[s].y/scale + accel[1]/scale*10000+zoomY)
+    if(debug == 1) makeLine(sparks[s].x/scale+zoomX, sparks[s].y/scale+zoomY, sparks[s].x/scale + accel[0]/scale*100+zoomX, sparks[s].y/scale + accel[1]/scale*100+zoomY)
     sparks[s].vx += accel[0] *dT
     sparks[s].vy += accel[1] *dT
   }
@@ -316,7 +316,7 @@ function colorOsci() {
 
 function adjustSparks() {
   // Num
-  while (sparks.length < sparkNum) genSparks(1, canvas.width/2*scale-zoomX*scale, canvas.height/2*scale-zoomY*scale, (Math.random() - 0.5) *scale+zoomX, (Math.random() - 0.5) *scale+zoomY)
+  while (sparks.length < sparkNum) genSparks(1, canvas.width/2*scale-zoomX*scale, canvas.height/2*scale-zoomY*scale, (Math.random() - 0.5) *scale, (Math.random() - 0.5) *scale)
   if (sparks.length > sparkNum) sparks.splice(0, sparks.length - sparkNum)
   // Velo
   for (var s in sparks) {
@@ -413,6 +413,7 @@ function genSliders() {
         .append(
           $('<span>')
             .attr("class", "desc")
+            .attr("id", sliders[slid].name+"Font")
             .text("(" + window[slid] + ")")
         )
     )
@@ -469,6 +470,13 @@ function makeFullscreen() {
   canvas.height = window.innerHeight + 50
   canvas.width = window.innerWidth
   drawBG(genCol())
+}
+
+function update() {
+  for(var p in sliders) {
+    document.getElementById(sliders[p].name).value = window[p]
+    document.getElementById(sliders[p].name+"Font").innerHTML = "("+window[p]+")"
+  }
 }
 
 drawBG(genCol())

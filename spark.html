@@ -53,11 +53,13 @@
       Edit Physics:
       <div id="phy">
         <input type="button" value="Add Planet" onClick='javascript:addPlanet(Math.random() * canvas.width * scale, Math.random() * canvas.height * scale)'><br>
-        <input type="button" value="Add 1 particle" onClick='javascript:sparkNum++'><br>
+        <input type="button" value="Add 1 particle" onClick='javascript:sparkNum++;update()'><br>
         <span class="desc">Should sparks affect each other? </span><input type="checkbox" onChange="sparksAffect ?  sparksAffect = false : sparksAffect = true" checked><br>
         <span class="desc">Set debug-level: </span><input id="debug" type="text" onChange='javascript:debug=this.value'><br>
-        <span class="desc">Set which particle to follow (undefined = none): </span><input type="text" onChange='javascript:centered = this.value'><br>
-        <input type="button" value="Create real Universe" onClick='javascript:genUniverse()'><br>
+        <span class="desc">Set which particle to follow (undefined = none): </span><input type="text" onChange='javascript:centered = this.value'><input type="button" value="Next particle" onClick='javascript:if(centered) centered++'><br>
+        <input type="button" value="Create real Universe" onClick='javascript:genUniverse();update()'><br>
+        <input type="button" value="/=10" onClick='javascript:scale/=10;update()'> scale <input type="button" value="*=10" onClick='javascript:scale*=10;update()'><br>
+        <input type="button" value="/=10" onClick='javascript:vMax/=10;update()'> velocity <input type="button" value="*=10" onClick='javascript:vMax*=10;update()'><br>
       </div>
       <hr>
       Set Mode:<br>
