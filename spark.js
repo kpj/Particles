@@ -45,6 +45,7 @@ function genSparks(num, x, y, vx, vy, m) {
       "vy" : vy,
       "a" : Math.random() * Math.PI * 2 - Math.PI,
       "b" : 0,
+      "r" : sparkSize,
       "accel" : 0,
       "d" : Math.random()/5,
       "swarm" : "-1",
@@ -222,10 +223,10 @@ function getAccel(obj1, obj2) {
   distX = obj2.x - obj1.x
   distY = obj2.y - obj1.y
   dist = Math.sqrt(Math.pow(distX, 2) + Math.pow(distY, 2))
+  if(Math.abs(dist) < Math.max(obj2.r*scale, obj1.r*scale)) return "FAIL"
   f = gravK * (obj2.m * obj1.m) / Math.pow(dist, 2)
   accel = f / obj1.m
 
-  if(Math.abs(dist) < Math.max(obj2.r, obj1.r)*scale) return "FAIL"
   accelX = (distX < 0 ? -1 : 1) * Math.abs(distX / dist) * accel
   accelY = (distY < 0 ? -1 : 1) * Math.abs(distY / dist) * accel
   return [accelX, accelY]
